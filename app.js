@@ -8,7 +8,6 @@ import privilege_router from "./routes/privilege.router.js";
 dotenv.config();
 
 const app = express();
-const port = 3002;
 
 app.use(express.json());
 
@@ -18,6 +17,6 @@ app.use("/privilege", privilege_router);
 
 connectDB();
 
-app.listen(port, () => {
+app.listen(process.env.port, () => {
   console.log("localhost connected");
 });
