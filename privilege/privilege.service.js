@@ -21,7 +21,9 @@ const updatePrivilegeById = async (privilege_id, update) => {
 };
 
 const deletePrivilegeById = async (privilege_id) => {
-  return await Privilege.deleteOne({ _id: privilege_id });
+  const privilege = await Privilege.findById(privilege_id);
+  if (!privilege) return null;
+  return await privilege.deleteOne();
 };
 
 export {
