@@ -1,27 +1,47 @@
 import Topic from "./topics.model.js";
 
-const createTopic = async (data) => {
-  return await Topic.create(data);
-};
-
 const getAllTopics = async () => {
   return await Topic.find();
 };
 
-const updateTopicById = async (topic_id, update) => {
-  return await Topic.updateOne(
-    { _id: topic_id },
-    { $set: update },
-    { new: true }
-  );
+const getTopicById = async (id) => {
+  return await Topic.findById(id);
 };
 
-const deleteTopicById = async (topic_id) => {
-  const topic = await Topic.findById(topic_id);
-  if (!topic) {
-    return null;
+const createTopic = async ({ title, userId, categorieId }) => {
+  const existing = await Topic.findOne({ title });
+  if (existing) throw new Error("Titre déjà utilisé");
+
+  const newTopic = new Topic({
+    title: title.toLowerCase(),
+    userId,
+    categorieId,
+  });
+
+  return await newTopic.save();
+};
+
+const updateTopicById = async (id, update) => {
+  const { title } = update;
+
+  if (title) {
+    const existing = await Topic.findOne({ title });
+    const isSame = existing && existing._id.toString() === id;
+    if (existing && !isSame) throw new Error("Titre déjà utilisé");
+    update.title = title.toLowerCase();
   }
-  return await topic.deleteOne();
+
+  return await Topic.findByIdAndUpdate(id, update, { new: true });
 };
 
-export { createTopic, getAllTopics, updateTopicById, deleteTopicById };
+const deleteTopicById = async (id) => {
+  return await Topic.findByIdAndDelete(id);
+};
+
+export {
+  getAllTopics,
+  getTopicById,
+  createTopic,
+  updateTopicById,
+  deleteTopicById,
+};
