@@ -4,10 +4,6 @@ const getAllTopics = async () => {
   return await Topic.find();
 };
 
-const getTopicById = async (id) => {
-  return await Topic.findById(id);
-};
-
 const createTopic = async ({ title, userId, categorieId }) => {
   const existing = await Topic.findOne({ title });
   if (existing) throw new Error("Titre déjà utilisé");
@@ -38,10 +34,4 @@ const deleteTopicById = async (id) => {
   return await Topic.findByIdAndDelete(id);
 };
 
-export {
-  getAllTopics,
-  getTopicById,
-  createTopic,
-  updateTopicById,
-  deleteTopicById,
-};
+export { getAllTopics, createTopic, updateTopicById, deleteTopicById };
