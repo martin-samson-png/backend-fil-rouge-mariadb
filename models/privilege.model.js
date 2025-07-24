@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const privilegeSchema = new mongoose.Schema({
-  privilege: { type: String, required: true, unique: true },
+  name: { type: String, required: true, unique: true },
 });
 
 privilegeSchema.pre(
-  "deleteOne",
+  "findByIdAndDelete",
   { document: true, query: false },
   async function (next) {
     try {

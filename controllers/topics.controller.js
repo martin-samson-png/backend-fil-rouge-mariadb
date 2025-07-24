@@ -3,7 +3,7 @@ import {
   getAllTopics,
   updateTopicById,
   deleteTopicById,
-} from "./topics.service.js";
+} from "../services/topics.service.js";
 
 const createTopicController = async (req, res) => {
   try {
@@ -43,7 +43,7 @@ const updateTopicByIdController = async (req, res) => {
     const { id } = req.params;
     const update = req.body;
 
-    if (!id || !update || Object.keys(update).length === 0) {
+    if (!id || !update) {
       return res.status(400).json({ message: "Données invalides" });
     }
 
