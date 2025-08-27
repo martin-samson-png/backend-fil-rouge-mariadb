@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 
-const getpool = () => {
+const getPool = () => {
   try {
     const pool = mysql.createPool({
       host: process.env.MARIA_HOST,
@@ -18,4 +18,4 @@ const getpool = () => {
   }
 };
 
-export default getpool;
+export default getPool;
