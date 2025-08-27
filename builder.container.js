@@ -1,4 +1,4 @@
-import getPool from "./config/MariaDB.js";
+import getPool from "./config/mariaDB.js";
 import PrivilegeRepository from "./repository/privileges.repository.js";
 import PrivilegeService from "./services/privileges.service.js";
 import PrivilegeController from "./controllers/privileges.controller.js";
