@@ -2,10 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import roles_router from "./routes/roles.router.js";
-import users_router from "./routes/users.routes.js";
 import privilegeRoutes from "./routes/privileges.routes.js";
-import categories_router from "./routes/categories.router.js";
 import builderContainer from "./builder.container.js";
 import errorHandler from "./middleware/handling.error.js";
 
