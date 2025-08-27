@@ -1,5 +1,3 @@
-import User from "../models/users.model.js";
-
 class UserRepository {
   async findUserByEmail(email) {
     try {
@@ -26,6 +24,7 @@ class UserRepository {
       throw new Error("Erreur lors de la recupération des utilisateurs", err);
     }
   }
+
   async getUserById(id) {
     try {
       return await User.findById(id);
@@ -33,6 +32,7 @@ class UserRepository {
       throw new Error("Erreur lors de la récuperation de l'utilisateur", err);
     }
   }
+
   async updateUserById(id, update) {
     try {
       return await User.findByIdAndUpdate(id, { $set: update }, { new: true });
@@ -40,6 +40,7 @@ class UserRepository {
       throw new Error("Erreur lors de la mise à jour de l'utilisateur", err);
     }
   }
+
   async deleteUserById(id) {
     try {
       return await User.findByIdAndDelete(id);

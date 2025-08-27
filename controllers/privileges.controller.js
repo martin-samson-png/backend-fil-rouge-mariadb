@@ -1,22 +1,17 @@
-import PrivilegeService from "../services/privileges.service.js";
-
 class PrivilegeController {
   constructor(privilegeService) {
     this.privilegeService = privilegeService;
   }
 
-  async createPrivilege(req, res) {
+  async createPrivilege(req, res, next) {
     try {
       const { name } = req.body;
-      if (!name) {
-        res.status(400).json({ message: "Missing data" });
-      }
       const newPrivilege = await this.privilegeService.createPrivilege({
         name,
       });
       res.status(201).json(newPrivilege);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(err);
     }
   }
 
@@ -64,4 +59,4 @@ class PrivilegeController {
   }
 }
 
-export default new PrivilegeController(PrivilegeService);
+export default PrivilegeController;

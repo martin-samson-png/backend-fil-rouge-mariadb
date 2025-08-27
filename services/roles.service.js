@@ -1,27 +1,32 @@
-import RoleRepository from "../repository/roles.repository.js";
-
 class RoleService {
   constructor(roleRepository) {
     this.roleRepository = roleRepository;
   }
 
-  async createRole({ name, idsPrivilege }) {
+  async createRole({ name }) {
+    if (!name || Object.keys(name).length === 0) {
+      throw new Error("ArgumentRequired");
+    }
     try {
-      return await this.roleRepository.createRole({
-        name,
-        privileges: idsPrivilege,
-      });
+      const role = await this.getRoleByName(name);
+      if (role) {
+        throw new Error("DataAlreadyExist");
+      }
+      return await this.roleRepository.createRole({ name });
     } catch (err) {
       console.error(err);
       throw new Error(err.message);
     }
   }
 
-  async getRoleById(id) {
+  async getRoleByName(name) {
+    if (!name || Object.keys(name).length === 0) {
+      throw new Error("ArgumentRequired");
+    }
     try {
-      return await this.roleRepository.getRoleById(id);
+      return await this.roleRepository.getRoleByName(name);
     } catch (err) {
-      throw new Error(err.message);
+      throw new Error("DataNotFound", err);
     }
   }
 
@@ -45,4 +50,4 @@ class RoleService {
   }
 }
 
-export default new RoleService(RoleRepository);
+export default RoleService;

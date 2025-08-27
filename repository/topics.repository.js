@@ -1,5 +1,3 @@
-import Topic from "../models/topics.model.js";
-
 class TopicRepository {
   async createTopic({ title, idCategory, idUser }) {
     try {

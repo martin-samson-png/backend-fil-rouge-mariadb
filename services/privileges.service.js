@@ -1,12 +1,21 @@
-import PrivilegeRepository from "../repository/privileges.repository.js";
-
 class PrivilegeService {
   constructor(privilegeRepository) {
     this.privilegeRepository = privilegeRepository;
   }
 
+  async getPrivilegeByName(name) {
+    return await this.privilegeRepository.getPrivilegeByName(name);
+  }
+
   async createPrivilege({ name }) {
+    if (!name || Object.keys(name).length === 0) {
+      throw new Error("ArgumentRequired");
+    }
     try {
+      const privilege = await this.getPrivilegeByName(name);
+      if (privilege) {
+        throw new Error("DataAlreadyExist");
+      }
       return await this.privilegeRepository.createPrivilege({ name });
     } catch (err) {
       throw new Error(err.message);
@@ -21,17 +30,8 @@ class PrivilegeService {
     }
   }
 
-  async getPrivilegeById(id) {
+  async updatePrivilegeById(id) {
     try {
-      return await this.privilegeRepository.getPrivilegeById(id);
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  }
-
-  async updatePrivilegeById(id, update) {
-    try {
-      return await this.privilegeRepository.updatePrivilegeById(id, update);
     } catch (err) {
       throw new Error(err.message);
     }
@@ -46,4 +46,4 @@ class PrivilegeService {
   }
 }
 
-export default new PrivilegeService(PrivilegeRepository);
+export default PrivilegeService;

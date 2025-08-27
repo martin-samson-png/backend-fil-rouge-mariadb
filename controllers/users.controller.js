@@ -4,10 +4,11 @@ class UserController {
   constructor(userService) {
     this.userService = userService;
   }
+
   async createUser(req, res) {
     const { username, email, password } = req.body;
     if (!username || !email || !password)
-      res.status(400).json({ message: "Champs manquant" });
+      return res.status(400).json({ message: "Champs manquant" });
     try {
       const newUser = await this.userService.createUser({
         username,
@@ -30,7 +31,7 @@ class UserController {
   async logInUser(req, res) {
     const { email, password } = req.body;
     if (!email || !password) {
-      res.status(400).json({ message: "Champ manquant" });
+      return res.status(400).json({ message: "Champ manquant" });
     }
     try {
       const { token, user } = await this.userService.logInUser({

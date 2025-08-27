@@ -1,5 +1,3 @@
-import Category from "../models/categories.model.js";
-
 class CategoryRepository {
   async createCategory({ name }) {
     try {

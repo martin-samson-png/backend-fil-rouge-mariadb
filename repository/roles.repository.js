@@ -1,46 +1,57 @@
-import Role from "../models/roles.model.js";
-
 class RoleRepository {
-  async createRole({ name, privileges }) {
-    try {
-      const newRole = new Role({ name, privileges });
-      await newRole.save();
-      return newRole;
-    } catch (err) {
-      throw new Error("Error creating role" + err.message);
-    }
+  constructor(pool) {
+    this.pool = pool;
   }
-
-  async getRoleById(id) {
+  async createRole({ name }) {
     try {
-      const role = await Role.findById(id).populate("privileges");
-      console.log(role);
-      return role;
+      const [result] = await this.pool.query(
+        "INSERT INTO Roles (name) VALUES (?)",
+        [name]
+      );
+      return { id: result.insertId, name };
     } catch (err) {
       console.error(err);
-      throw new Error("Error while retrieving role", err);
+      throw new Error("Error creating role");
     }
   }
 
-  async updateRoleById(id, update) {
+  async getRoleByName(name) {
     try {
-      return await Role.findByIdAndUpdate(
-        id,
-        { $set: update },
-        { new: true }
-      ).populate("privileges");
+      const [rows] = await this.pool.query(
+        "SELECT name FROM Roles where name=?",
+        [name]
+      );
+      return rows[0] || null;
     } catch (err) {
-      throw new Error("Error updating role", err);
+      console.error(err);
+      throw new Error("Error while retrieving Roles");
+    }
+  }
+
+  async updateRoleById(id, name) {
+    try {
+      const [result] = await this.pool.query(
+        "UPDATE Roles SET name=? WHERE id=?",
+        [name, id]
+      );
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error("Error updating privilege");
     }
   }
 
   async deleteRoleById(id) {
     try {
-      return await Role.findByIdAndDelete(id);
+      const result = await this.pool.query("DELETE FROM Roles WHERE id=?", [
+        id,
+      ]);
+      return result;
     } catch (err) {
-      throw new Error("Error deleting role", err);
+      console.error(err);
+      throw new Error("Error deleting privilege");
     }
   }
 }
 
-export default new RoleRepository();
+export default RoleRepository;
